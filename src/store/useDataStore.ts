@@ -7,7 +7,7 @@ interface results {
 
 
 interface apiResponse {
-    info: Object,
+    info: object,
     results: results[]
 }
 
@@ -35,7 +35,7 @@ const useDataStore = create<DataState>((set, get) => ({
 
         const { inputValue } = get();
 
-        let url = inputValue === "" ? `https://rickandmortyapi.com/api/character/?page=${page}` : `https://rickandmortyapi.com/api/character/?page=${page}&name=${inputValue}`
+        const url = inputValue === "" ? `https://rickandmortyapi.com/api/character/?page=${page}` : `https://rickandmortyapi.com/api/character/?page=${page}&name=${inputValue}`
 
         return fetch(url)
         .then(res => res.json())
@@ -43,7 +43,7 @@ const useDataStore = create<DataState>((set, get) => ({
     },
     changePageHalf: (num) => {
         const { page } = get();
-        let currentPage = page;
+        const currentPage = page;
         
 
         set({pageHalf:num});
