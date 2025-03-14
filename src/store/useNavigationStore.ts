@@ -5,7 +5,7 @@ interface nav {
     setNavigation: (str:"home" | "favorites" | "character") => void
 }
 
-const useNavigatorStore = create<nav>((set, get) => ({
+const useNavigatorStore = create<nav>((set) => ({
     nav: "home",
 
     setNavigation: (str) => {

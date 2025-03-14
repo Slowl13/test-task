@@ -1,9 +1,6 @@
 import useDataStore from "@/store/useDataStore"
 import { useEffect } from "react"
 
-
-
-
 export default function Character(){
 
     const {currentCharacterId, currentCharacterObj, getCharacterData} = useDataStore()
