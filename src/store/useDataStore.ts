@@ -1,13 +1,27 @@
 import { create } from "zustand"
 
 interface results {
+    id: number,
+    status: string,
+    species: string,
+    type: string,
+    gender: string,
     name: string,
-    image: string
+    origin: {
+        name: string
+    }
+    image: string,
 }
 
+interface info {
+    count: number,
+    pages: number,
+    next: string|null,
+    prev: string|null
+}
 
 interface apiResponse {
-    info: object,
+    info: info,
     results: results[]
 }
 
@@ -16,10 +30,16 @@ interface DataState {
     setInputValue: (value: string) => void,
     data: apiResponse|null,
     isLoading: boolean,
-    page: number,
+    url: string,
     pageHalf: number,
+    currentCharacterId: number | null,
+    currentCharacterObj: results|null,
     fetchData: () => Promise<void>,
+    prevPage: () => void,
+    nextPage: () => void,
     changePageHalf: (num:number) => void,   
+    showCharacter: (id:number) => void,
+    getCharacterData: (id: number|null) => Promise<void>
 }
 
 const useDataStore = create<DataState>((set, get) => ({
@@ -27,42 +47,61 @@ const useDataStore = create<DataState>((set, get) => ({
     data: null,
     isLoading: false,
     pageHalf:1,
-    page: 1,
+    currentCharacterId: null,
+    currentCharacterObj: null,
+    url: 'https://rickandmortyapi.com/api/character/',
+
     fetchData: () => {
         set({isLoading: true});
 
-        const { page } = get();
-
-        const { inputValue } = get();
-
-        const url = inputValue === "" ? `https://rickandmortyapi.com/api/character/?page=${page}` : `https://rickandmortyapi.com/api/character/?page=${page}&name=${inputValue}`
+        const { url } = get();
 
         return fetch(url)
         .then(res => res.json())
         .then((data) => {set({ data, isLoading: false}); console.log(data)})
     },
-    changePageHalf: (num) => {
-        const { page } = get();
-        const currentPage = page;
+
+    nextPage: () => {
+        const { data} = get();
+
+        if (data?.info.next !== null) set({ url: data?.info.next})
         
+    },
+
+    prevPage: () => {
+        const { data} = get();
+
+        if (data?.info.prev !== null) set({ url: data?.info.prev})
+
+    },
+
+    changePageHalf: (num) => {       
 
         set({pageHalf:num});
-        
+
         if(num === 3){
             set({pageHalf:1});
-            set({page: currentPage+1});
-            get().fetchData();
+            get().nextPage();
         }
 
         if(num === 4){
             set({pageHalf:2});
-            set({page: currentPage-1});
-            get().fetchData();
+            get().prevPage();
         }
     },
+
     setInputValue: (value) => {
-        set({inputValue: value});
-        set({page: 1, pageHalf: 1})
+        set({inputValue: value, pageHalf: 1, url: `https://rickandmortyapi.com/api/character/?page=1&name=${value}`});
+    },
+
+    showCharacter(id) {
+        set({currentCharacterId: id})
+    },
+
+    getCharacterData(id) {
+        return fetch(`https://rickandmortyapi.com/api/character/${id}`)
+        .then(res => res.json())
+        .then((data) => {set({currentCharacterObj:data});console.log(data)})
     }
 }));
 
