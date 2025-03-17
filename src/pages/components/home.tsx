@@ -5,7 +5,7 @@ import useNavigatorStore from "@/store/useNavigationStore";
 
 
 export default function Home(){
-    const { data, url, fetchData, inputValue, changePage, favoriteData, favoriteIds, fetchFavoriteData, changeNumberOfPages, filterFavoriteData ,favoriteCurrentPages, changeFavortitePage} = useDateStore();
+    const { data, url, fetchData, inputValue, changePage, favoriteData, favoriteIds, fetchFavoriteData, favoriteCurrentPages, changeFavortitePage} = useDateStore();
     const { nav } = useNavigatorStore();
 
     useEffect( () => {

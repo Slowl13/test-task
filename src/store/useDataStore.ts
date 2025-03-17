@@ -80,11 +80,11 @@ const useDataStore = create<DataState>((set, get) => ({
     changePage: (action) => {
         const { data } = get();
 
-        data?.info[action] !== null && set({url: data?.info[action]})
+        data?.info[action] !== null && set({url: data?.info[action]});
     },
 
     changeFavortitePage: (action) => {
-        const {favoriteCurrentPages, favoriteTotalPages} = get()
+        const {favoriteCurrentPages, favoriteTotalPages} = get();
 
         action === "next" && favoriteCurrentPages >= 1 && favoriteCurrentPages < favoriteTotalPages && set({favoriteCurrentPages: favoriteCurrentPages+1})
         action === "prev" && favoriteCurrentPages > 1 && favoriteCurrentPages <= favoriteTotalPages && set({favoriteCurrentPages: favoriteCurrentPages-1})

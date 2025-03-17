@@ -2,7 +2,7 @@ import useDataStore from "@/store/useDataStore"
 import useNavigatorStore from "@/store/useNavigationStore";
 
 export default function Header(){
-    const { setInputValue, fetchData } = useDataStore();
+    const { setInputValue} = useDataStore();
     const { setNavigation } = useNavigatorStore();
 
     const handleChangeMain = (event: React.ChangeEvent<HTMLInputElement>) => {
