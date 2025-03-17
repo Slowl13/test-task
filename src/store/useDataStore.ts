@@ -74,7 +74,7 @@ const useDataStore = create<DataState>((set, get) => ({
 
         return fetch(url)
         .then(res => res.json())
-        .then((data) => {set({ data, isLoading: false}); console.log(data)})
+        .then((data) => {set({ data, isLoading: false})})
     },
 
     changePage: (action) => {
@@ -107,7 +107,7 @@ const useDataStore = create<DataState>((set, get) => ({
     getCharacterData: (id) => {
         return fetch(`https://rickandmortyapi.com/api/character/${id}`)
         .then(res => res.json())
-        .then((data) => {set({currentCharacterObj:data});console.log(data)})
+        .then((data) => {set({currentCharacterObj:data})})
     },
 
     isFavorite: (id) => {

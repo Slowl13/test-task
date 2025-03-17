@@ -25,6 +25,7 @@ export default function Home(){
         {
             hasFavoriteDataEmpty && <p className="text-center pt-10 text-xl">Список избранных пуст. Добавьте персонажей с главной страницы!</p>
         }
+
         <div className="grid grod-cols-1 sm:grid-cols-2 lg:grid-cols-5 justify-items-center gap-[40px] mt-[40px]">
 
             {hasData && (data?.results.map((item, index)=> {
@@ -32,8 +33,7 @@ export default function Home(){
             }))}
 
             {hasFavoriteData  &&  favoriteData.map((item, index) => {
-                if (index < 20 * favoriteCurrentPages && index >= 20 * (favoriteCurrentPages-1)) return <Card key={index} src={item.image} name={item.name} characterId={item.id}/>
-                
+                if (index < 20 * favoriteCurrentPages && index >= 20 * (favoriteCurrentPages-1)) return <Card key={index} src={item.image} name={item.name} characterId={item.id}/> 
             })}
 
         </div>
