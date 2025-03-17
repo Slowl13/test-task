@@ -9,8 +9,7 @@ export default function Index() {
   return (
     <div>
       <Header></Header>
-      {nav === "home" && <Home></Home>}
-      {nav === "character" && <Character></Character>}
+      {nav === "character" ? <Character></Character> : <Home></Home>}
     </div> 
   );
 }

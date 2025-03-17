@@ -1,44 +1,47 @@
 import { useEffect } from "react";
 import useDateStore from "@/store/useDataStore";
 import Card from "./card";
+import useNavigatorStore from "@/store/useNavigationStore";
 
 
 export default function Home(){
-    const { data, url, fetchData, pageHalf, changePageHalf, inputValue } = useDateStore();
+    const { data, url, fetchData, inputValue, changePage, favoriteData, favoriteIds, fetchFavoriteData, changeNumberOfPages, filterFavoriteData ,favoriteCurrentPages, changeFavortitePage} = useDateStore();
+    const { nav } = useNavigatorStore();
 
     useEffect( () => {
-    fetchData();
+        fetchData();
     }, [fetchData, inputValue, url])
 
-    const hasData = data && data.results;
+    useEffect( () => {
+        fetchFavoriteData();
+    }, [fetchFavoriteData, inputValue, favoriteIds])
+
+    const hasData = data && data?.results && nav === "home";
+    const hasFavoriteData = nav === "favorites" && favoriteIds.length !== 0
+    const hasFavoriteDataEmpty = nav === "favorites" && favoriteIds.length === 0
 
     return (
     <div>
+        {
+            hasFavoriteDataEmpty && <p className="text-center pt-10 text-xl">Список избранных пуст. Добавьте персонажей с главной страницы!</p>
+        }
+        <div className="grid grod-cols-1 sm:grid-cols-2 lg:grid-cols-5 justify-items-center gap-[40px] mt-[40px]">
 
-        <div className="grid lg:grid-cols-5 justify-items-center gap-[40px] mt-[40px]">{hasData && (data.results.map((item, index)=> {
-            if(pageHalf === 1 && index < 10){
+            {hasData && (data?.results.map((item, index)=> {
                 return <Card key={index} src={item.image} name={item.name} characterId={item.id}/>
-            } else if(pageHalf === 2 && index >= 10){
-                return <Card key={index} src={item.image} name={item.name} characterId={item.id}/>
-            }
-        }))}</div>
+            }))}
 
-        <button onClick={() => {
-            changePageHalf(1);
-            if(pageHalf === 1 && hasData && data.info.prev !== null){
-                changePageHalf(4);
-            }
-        }}>Prev</button>
+            {hasFavoriteData  &&  favoriteData.map((item, index) => {
+                if (index < 20 * favoriteCurrentPages && index >= 20 * (favoriteCurrentPages-1)) return <Card key={index} src={item.image} name={item.name} characterId={item.id}/>
+                
+            })}
 
-        <button onClick={() => {
-            if(hasData && data?.results.length >= 10){
-                changePageHalf(2);
-            }
-            if(pageHalf === 2){
-                changePageHalf(3);
-            }
-        }}>Next</button>
-        
+        </div>
+        <div className="flex justify-center gap-[20px] my-15">
+            <button className="bg-cyan-500 w-20 h-10 hover:bg-fuchsia-500" onClick={() => {changePage("prev"); changeFavortitePage("prev")}}>Prev</button>
+
+            <button className="bg-cyan-500 w-20 h-10 hover:bg-fuchsia-500" onClick={() => {changePage("next"); changeFavortitePage("next")}}>Next</button>
+        </div>
     </div> 
     );
 }
