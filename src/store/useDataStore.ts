@@ -123,8 +123,6 @@ const useDataStore = create<DataState>((set, get) => ({
 
         const newFavorite: Array<number> = favoriteIds.some((item) => item === id) ? favoriteIds.filter((elem) => {return elem !== id}) : [id, ...favoriteIds]
 
-        console.log(favoriteIds.length > newFavorite.length ? "уехало" : "приехало")
-
         set({favoriteIds: newFavorite})
 
         localStorage.setItem("favorite", JSON.stringify(newFavorite))
