@@ -65,7 +65,7 @@ const useDataStore = create<DataState>((set, get) => ({
     favoriteCurrentPages: 1,
     favoriteTotalPages: 1,
     url: 'https://rickandmortyapi.com/api/character/',
-    favoriteIds: typeof window !== "undefined" && JSON.parse(localStorage.getItem("favorite") || '[]'),
+    favoriteIds: typeof window !== "undefined" ? JSON.parse(localStorage.getItem("favorite") || '[]') : [],
 
     fetchData: () => {
         set({isLoading: true});
